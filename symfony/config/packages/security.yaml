@@ -1,0 +1,31 @@
+security:
+  providers:
+    user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  encoders:
+    App\Entity\User: bcrypt
+
+  firewalls:
+    api_login:
+      stateless: true
+      anonymous: true
+      json_login:
+        provider:                 user_provider
+        check_path:               /api/auth/login
+        username_path:            email
+        success_handler:          lexik_jwt_authentication.handler.authentication_success
+        failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+      provider: user_provider
+
+  access_control:
+    - { path: ^/api/auth/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/registration_invite/.* , roles: IS_AUTHENTICATED_ANONYMOUSLY}
+    - { path: ^/, roles: ROLE_USER }
+    - { path: ^/api/user/me, roles: ROLE_USER }
