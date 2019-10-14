@@ -1,0 +1,9 @@
+.wrapper{
+    width : 24rem;
+}
+
+.PhotoUpload-photo{
+    padding-bottom: 30px;
+    max-width: 280px;
+    max-height: 280px;
+}
