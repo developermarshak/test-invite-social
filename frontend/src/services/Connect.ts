@@ -13,7 +13,6 @@ export function getInnerUrl(path: string) {
 
 export function tryLogin(email: string, password: string, axiosInstance: AxiosInstance) {
     const data = {email, password};
-    console.log(data);
     return axiosInstance.post(LOGIN_PATH, data, getConfig(false));
 }
 

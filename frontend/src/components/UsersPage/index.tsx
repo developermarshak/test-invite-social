@@ -41,7 +41,7 @@ class UsersPage extends React.Component<types.Props, types.State>{
         const data = await this.props.axiosInstance.get(UPDATE_PATH+"?page="+page, getConfig());
         const users: UserPageTypes.User[] = data.data.users;
         const pages = data.data.pages;
-        console.log(data.data);
+
         this.setState({users, pages, loading: false});
     }
 

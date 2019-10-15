@@ -28,30 +28,21 @@ class LoginPage extends React.Component<types.Props, types.State>{
     onSubmit = async (e: FormEvent) => {
         this.setState({loading: true})
         e.preventDefault();
-        try{
-            const {email, password} = this.state;
-            let res = await tryLogin(email, password, this.props.axiosInstance);
-            if(!res.data.token){
-                let errors = [];
-                errors.push("Invalid login or password.");
-                this.setState({errors});
-            }
-            else{
-                console.log(res);
-                console.log(res.data);
-                const token = res.data.token;
-                setToken(token);
-
-                const history = this.props.customHistory;
-                history.push("/user/me");
-            }
+        const {email, password} = this.state;
+        let res = await tryLogin(email, password, this.props.axiosInstance);
+        if(!res.data.token){
+            let errors = [];
+            errors.push("Invalid login or password.");
+            this.setState({errors});
         }
-        catch (e) {
-            if(e.response && e.response.statusText){
-                console.log(e);
-            }
+        else{
+            const token = res.data.token;
+            setToken(token);
 
+            const history = this.props.customHistory;
+            history.push("/user/me");
         }
+
         this.setState({loading:false})
 
     }

@@ -41,7 +41,6 @@ export default class Root extends React.Component<types.Props, types.State>{
     }
 
     errorHandler = (error: any) => {
-        console.log(error);
         let errorMessage = "Cannot do request, please try again.";
         let errors = [];
         if(error.response && error.request && error.response.status) {
@@ -83,8 +82,6 @@ export default class Root extends React.Component<types.Props, types.State>{
         if(errors.length === 0){
             errors.push(errorMessage);
         }
-
-        console.log(errors);
 
         this.setErrors(errors);
 

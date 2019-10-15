@@ -20,7 +20,6 @@ class PhotoUpload extends React.Component<types.Props, types.State>{
             file: null,
             token: null
         };
-        console.log(this.props);
     }
 
     onSubmit = async (e: FormEvent) => {
