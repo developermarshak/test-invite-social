@@ -1,4 +1,4 @@
-import {getToken} from './TokenStorage';
+import {getToken, setToken} from './TokenStorage';
 import {AxiosInstance} from "axios";
 
 const LOGIN_PATH = "/api/auth/login";
@@ -11,9 +11,11 @@ export function getInnerUrl(path: string) {
     return `http://localhost:4000${path}`
 }
 
-export function tryLogin(email: string, password: string, axiosInstance: AxiosInstance) {
+export async function tryLogin(email: string, password: string, axiosInstance: AxiosInstance) {
     const data = {email, password};
-    return axiosInstance.post(LOGIN_PATH, data, getConfig(false));
+    let res = await axiosInstance.post(LOGIN_PATH, data, getConfig(false));
+    const token = res.data.token;
+    setToken(token);
 }
 
 export function getConfig(token: string | null | false = null) {

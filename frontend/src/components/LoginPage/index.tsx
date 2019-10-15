@@ -29,22 +29,12 @@ class LoginPage extends React.Component<types.Props, types.State>{
         this.setState({loading: true})
         e.preventDefault();
         const {email, password} = this.state;
-        let res = await tryLogin(email, password, this.props.axiosInstance);
-        if(!res.data.token){
-            let errors = [];
-            errors.push("Invalid login or password.");
-            this.setState({errors});
-        }
-        else{
-            const token = res.data.token;
-            setToken(token);
-
+        tryLogin(email, password, this.props.axiosInstance).then(() => {
             const history = this.props.customHistory;
             history.push("/user/me");
-        }
-
-        this.setState({loading:false})
-
+        }).finally(() => {
+            this.setState({loading:false});
+        });
     }
 
     setEmail = (e: ChangeEvent<HTMLInputElement>) => {
