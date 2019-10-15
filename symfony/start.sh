@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+rm -rf vendor
 composer install
 mkdir -p config/jwt
 openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096 -pass pass:A813Jkjasnvndu23

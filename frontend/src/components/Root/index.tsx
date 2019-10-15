@@ -44,11 +44,16 @@ export default class Root extends React.Component<types.Props, types.State>{
         let errorMessage = "Cannot do request, please try again.";
         let errors = [];
         if(error.response && error.request && error.response.status) {
-            const status = error.response.status;
-            const data = error.response.data;
+            const {status, data} = error.response;
             const url = error.request.responseURL;
 
-            if (data.error_description && data.error_description.errors) {
+            if (status === 401 && url.indexOf("/api/auth/login") === -1) {
+                errorMessage = "Please login =)";
+                removeToken();
+                this.customHistory.push('/auth/login');
+            }
+
+            else if (data.error_description && data.error_description.errors) {
                 errors = data.error_description.errors.map((errorItem: any) => {
                     const field = errorItem.property_path.replace("[", "").replace("]", "");
                     return field+": "+errorItem.message
@@ -62,19 +67,12 @@ export default class Root extends React.Component<types.Props, types.State>{
 
             }
             else if (status === 401) {
-                if(url.indexOf("/api/auth/login") === -1){
-                    errorMessage = "Please login again";
-                    removeToken();
-                    this.customHistory.push('/auth/login');
-                }
-                else{
-                    errorMessage = "Invalid credentials";
-                }
+                errorMessage = "Invalid credentials";
             }
             else if (status === 413){
                 errorMessage = "Too big request"
             }
-            else if (status > 500){
+            else if (status >= 500){
                 errorMessage = "Internal error please try again"
             }
         }
@@ -97,6 +95,10 @@ export default class Root extends React.Component<types.Props, types.State>{
 
     render = () => {
         const errors = [...this.state.errors];
+
+        const {customHistory, axiosInstance} = this;
+        const defaultProps = {customHistory, axiosInstance};
+
         return <Router history={this.customHistory}>
         <Page>
             <Page.Main>
@@ -113,26 +115,26 @@ export default class Root extends React.Component<types.Props, types.State>{
                 }
                 <Switch>
                     <PrivateRoute path={"/"} exact={true}>
-                        <UserPage customHistory={this.customHistory} axiosInstance={this.axiosInstance}/>
+                        <UserPage {...defaultProps}/>
                     </PrivateRoute>
                     <Route path={"/auth/login"}>
-                        <LoginPage customHistory={this.customHistory} axiosInstance={this.axiosInstance}/>
+                        <LoginPage {...defaultProps}/>
                     </Route>
                     <Route path={"/registration/:invite_code"} render={(props) => {
-                        return <RegisterPage customHistory={this.customHistory} axiosInstance={this.axiosInstance} {...props}/>
+                        return <RegisterPage {...defaultProps} {...props}/>
 
                     }}/>
                     <Route path={"/registration"}>
-                        <RegisterPage customHistory={this.customHistory} axiosInstance={this.axiosInstance}/>
+                        <RegisterPage {...defaultProps}/>
                     </Route>
                     <PrivateRoute path={"/user/me"}>
-                        <UserPage customHistory={this.customHistory} axiosInstance={this.axiosInstance}/>
+                        <UserPage {...defaultProps}/>
                     </PrivateRoute>
                     <PrivateRoute path={"/user"}>
-                        <UsersPage customHistory={this.customHistory} axiosInstance={this.axiosInstance}/>
+                        <UsersPage {...defaultProps}/>
                     </PrivateRoute>
                     <PrivateRoute path={"/invite"}>
-                        <InvitePage axiosInstance={this.axiosInstance}/>
+                        <InvitePage axiosInstance={axiosInstance}/>
                     </PrivateRoute>
                     <Route path="*">
                         <div>This page not exist :( <Link to={"/"}>Go Home!</Link></div>
