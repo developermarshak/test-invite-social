@@ -5,13 +5,28 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
 {
+    /**
+     * Directory for upload files
+     *
+     * @var string
+     */
     private $targetDirectory;
 
-    public function __construct($targetDirectory)
+    /**
+     * FileUploader constructor.
+     * @param string $targetDirectory
+     */
+    public function __construct(string $targetDirectory)
     {
         $this->targetDirectory = $targetDirectory;
     }
 
+    /**
+     * Upload file to target directory
+     *
+     * @param UploadedFile $file
+     * @return string
+     */
     public function upload(UploadedFile $file)
     {
         $fileName = uniqid().'.'.$file->guessExtension();
@@ -19,6 +34,11 @@ class FileUploader
         return $fileName;
     }
 
+    /**
+     * Return target upload directory
+     *
+     * @return string
+     */
     public function getTargetDirectory()
     {
         return $this->targetDirectory;

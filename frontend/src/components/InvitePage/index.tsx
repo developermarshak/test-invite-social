@@ -57,6 +57,8 @@ class InvitePage extends React.Component<types.Props, types.State>{
         const {className = false, ...rest} = this.props;
         const classes = "wrapper "+className;
 
+        const {loading, invites} = this.state;
+
         return (
             <>
                 <div className={classes} {...rest}>
@@ -64,7 +66,7 @@ class InvitePage extends React.Component<types.Props, types.State>{
                         <FormTextInput label={"Person Email"} onChange={ this.setEmail } type="email" />
                     </FormCard>
                     {
-                        this.state.loading ? <Loader/> : this.state.invites.map((invite) => {
+                        loading ? <Loader/> : invites.map((invite) => {
                           return <><InviteCard code={invite.code} for_email={invite.for_email}/></>
                         })
                     }

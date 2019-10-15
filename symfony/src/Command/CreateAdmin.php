@@ -17,6 +17,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class CreateAdmin
+ * Command
+ *
+ * @package App\Command
+ */
 class CreateAdmin extends Command
 {
     /**
@@ -36,6 +42,13 @@ class CreateAdmin extends Command
         parent::__construct("make:admin");
     }
 
+    /**
+     * Create base user with email: admin@local.com
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|void|null
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $user = new User();

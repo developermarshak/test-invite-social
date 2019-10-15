@@ -15,17 +15,13 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    const PAGE_SIZE = 100;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
     /**
-     *
-     *
-     * Return users, page, total, pagesCount
+     * Return users, page, total and pagesCount as array
      *
      * @param int $page
      * @param int $pageSize
@@ -54,6 +50,12 @@ class UserRepository extends ServiceEntityRepository
         return [$query->getResult(), $page, $total, $pagesCount];
     }
 
+    /**
+     * Return count users invited by some user
+     *
+     * @param int $userId
+     * @return int
+     */
     public function countByUserFromId(int $userId){
         return $this->count(['fromUserId' => $userId]);
     }

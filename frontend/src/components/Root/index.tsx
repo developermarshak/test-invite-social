@@ -96,7 +96,7 @@ export default class Root extends React.Component<types.Props, types.State>{
     }
 
     render = () => {
-        const errors = this.state.errors;
+        const errors = [...this.state.errors];
         return <Router history={this.customHistory}>
         <Page>
             <Page.Main>

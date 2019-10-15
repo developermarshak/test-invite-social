@@ -89,14 +89,15 @@ class UserPage extends React.Component<types.Props, types.State>{
             description = e.target.value;
         }
 
-        const user = this.state.user;
+        const {user} = this.state;
         user.description = description;
 
         this.setState({user});
     }
 
     render() {
-        const user = this.state.user;
+        const {axiosInstance, customHistory} = this.props;
+        const {user, loadingPassword, loading} = this.state;
 
         const description = user.description || "";
         return (
@@ -108,7 +109,7 @@ class UserPage extends React.Component<types.Props, types.State>{
                                         <Card.Title>Your Profile</Card.Title>
                                     </Card.Header>
 
-                                    {this.state.loading ? <Loader/> : <>
+                                    {loading ? <Loader/> : <>
                                             <Card.Body className={"p-6"}>
                                                 <FormTextInput label={"Id"} type="text"
                                                                readOnly={true} value={user.id}/>
@@ -127,7 +128,7 @@ class UserPage extends React.Component<types.Props, types.State>{
                                     <Card.Header>
                                         <Card.Title>Change Password</Card.Title>
                                     </Card.Header>
-                                        {this.state.loadingPassword ? <Loader/> : <>
+                                        {loadingPassword ? <Loader/> : <>
                                             <Card.Body className={"p-6"}>
                                                 <FormTextInput label={"Old Password"} type="password"
                                                                onChange={this.setOldPassword}/>
@@ -142,20 +143,20 @@ class UserPage extends React.Component<types.Props, types.State>{
                                 </Card>
                             </Grid.Col>
                             <Grid.Col width={12} sm={8} lg={4}>
-                                <PhotoUpload axiosInstance={this.props.axiosInstance} photoSrc={user.photo}/>
+                                <PhotoUpload axiosInstance={axiosInstance} photoSrc={user.photo}/>
                             </Grid.Col>
                             <Grid.Col width={12} sm={8} lg={4}>
-                                <Invite axiosInstance={this.props.axiosInstance} />
+                                <Invite axiosInstance={axiosInstance} />
                                 <Card>
                                     <Button className="btn btn-block btn-dark" onClick={() => {
                                         removeToken();
-                                        this.props.customHistory.push("/auth/login");
+                                        customHistory.push("/auth/login");
                                     }}>Logout</Button>
                                 </Card>
 
                                 <Card>
                                     <Button className="btn btn-block btn-white" onClick={() => {
-                                        this.props.customHistory.push("/user");
+                                        customHistory.push("/user");
                                     }}>Users</Button>
                                 </Card>
                             </Grid.Col>

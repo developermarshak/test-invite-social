@@ -46,7 +46,7 @@ class UsersPage extends React.Component<types.Props, types.State>{
     }
 
     render() {
-        const users = this.state.users;
+        const {users, page, pages, loading} = this.state;
 
         const BackToProfile = <>
             <div>
@@ -55,7 +55,7 @@ class UsersPage extends React.Component<types.Props, types.State>{
             </div>
         </>
 
-        if(this.state.loading){
+        if(loading){
             return <Page.Content title="Users">
                 <Loader/>
                 {BackToProfile}
@@ -68,15 +68,15 @@ class UsersPage extends React.Component<types.Props, types.State>{
                 {BackToProfile}
             </Page.Content>
         }
-        const pages = [];
-        for(let i = this.state.page - 5; i <= this.state.pages; i++){
+        const pagesRes = [];
+        for(let i = page - 5; i <= pages; i++){
             if(i < 1){
                 continue;
             }
-            if(pages.length >= 7){
+            if(pagesRes.length >= 7){
                 break;
             }
-            pages.push(<Button onClick={ () => {
+            pagesRes.push(<Button onClick={ () => {
                 this.setPage(i);
             }}>{i}</Button>);
         }
@@ -107,7 +107,7 @@ class UsersPage extends React.Component<types.Props, types.State>{
                             </Table.Body>
                         </Table>
                         <div>
-                            {pages}
+                            {pagesRes}
                         </div>
                         {BackToProfile}
                     </Page.Content>
